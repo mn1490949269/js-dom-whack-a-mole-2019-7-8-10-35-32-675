@@ -29,8 +29,40 @@ window.onload = function () {
     }
 
 
-    function startGame() {
-        // TODO: 写开始新游戏后发生的事
+        function startGame() {
+        start = true;
+        score=0;
+        randomPop()
+        setTimeout(() => {
+            start = false;
+        }, gameTime)
+    }
+
+    function randomPop() {
+        if (start) {
+            index = Math.floor(Math.random() * 6 + 1);
+            while (lastHole == index - 1) {
+                index = Math.floor(Math.random() * 6 + 1);
+            }
+            holes[index - 1].classList.add("up");
+            moles[index - 1].addEventListener('click', molesclick);
+            var t2 = setTimeout(() => {
+                holes[index - 1].classList.remove("up");
+                lastHole = index - 1;
+                randomPop();
+            }, Math.floor(Math.random() * 1200 + 200));
+        } else {
+            window.clearTimeout(t2);
+            titleH1.innerHTML = 'TIME UP！';
+            startBtn.style.display = 'inline';
+            startBtn.innerHTML = 'Replay！';
+        }
+    }
+
+    function molesclick(){
+        scoreBoard.innerHTML=score++;
+        moles[index - 1].removeEventListener('click',molesclick);
+        holes[index - 1].classList.remove("up");
     }
 
 };
